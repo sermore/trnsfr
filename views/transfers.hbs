@@ -76,17 +76,17 @@
             <form id="transferForm" name="transferForm" method="post" action="{{url '/admin/transfers'}}">
                 <div class="modal-body">
                     <div class="form-group">
-                        <label for="paramsInput">Params</label>
+                        <label for="paramsInput">Glob patterns</label>
                         <div class="input-group d-none">
                             <input type="text" name="params" class="form-control" id="paramsInput"
-                                   aria-describedby="paramsHelp" placeholder="Enter Params" disabled>
+                                   aria-describedby="paramsHelp" placeholder="Glob pattern" disabled>
                             <a href="#" class="input-group-text" onclick="removeField($(this))">
                                 <i class="fas fa-minus"></i>
                             </a>
                         </div>
                         <div class="input-group">
                             <input type="text" name="params" class="form-control main" id="paramsInput"
-                                   aria-describedby="paramsHelp" placeholder="Enter Params">
+                                   aria-describedby="paramsHelp" placeholder="Glob pattern">
                             <a href="#" class="input-group-text" onclick="listFiles()">
                                 <i class="fas fa-download"></i>
                             </a>
@@ -94,28 +94,28 @@
                                 <i class="fas fa-plus"></i>
                             </a>
                         </div>
-                        <small id="paramsHelp" class="form-text text-muted">Insert glob patterns.
+                        <small id="paramsHelp" class="form-text text-muted">Enter one or more glob patterns.
                         </small>
                         <ul id="paramsOutput" class="list-group">
                         </ul>
                     </div>
                     <div class="form-group">
-                        <label for="emailsInput">Emails</label>
+                        <label for="emailsInput">Email Recipients</label>
                         <div class="input-group d-none">
                             <input type="text" name="emails" class="form-control" id="emailsInput"
-                                   aria-describedby="emailsHelp" placeholder="Emails" disabled>
+                                   aria-describedby="emailsHelp" placeholder="Email" disabled>
                             <a href="#" class="input-group-text" onclick="removeField($(this))">
                                 <i class="fas fa-minus"></i>
                             </a>
                         </div>
                         <div class="input-group">
                             <input type="text" name="emails" class="form-control main" id="emailsInput"
-                                   aria-describedby="emailsHelp" placeholder="Emails">
+                                   aria-describedby="emailsHelp" placeholder="Email">
                             <a href="#" class="input-group-text" onclick="addField($(this))">
                                 <i class="fas fa-plus"></i>
                             </a>
                         </div>
-                        <small id="emailsHelp" class="form-text text-muted">Insert email recipients.
+                        <small id="emailsHelp" class="form-text text-muted">Insert on or more email recipients.
                         </small>
                     </div>
                     <div class="form-group">
@@ -136,7 +136,7 @@
                         <div class="form-check">
                             <input name="enabled" class="form-check-input" type="checkbox" id="enabledCheck" value="true">
                             <label class="form-check-label" for="enabledCheck">
-                                Enabled
+                                Download link enabled
                             </label>
                         </div>
                     </div>
@@ -144,7 +144,7 @@
                         <label for="enabledUntilInput">Enabled Until</label>
                         <input type="datetime-local" name="enabledUntil" class="form-control" id="enabledUntilInput"
                                aria-describedby="enabledUntilHelp" placeholder="Enabled until">
-                        <small id="enabledUntilHelp" class="form-text text-muted">Enabled until date.
+                        <small id="enabledUntilHelp" class="form-text text-muted">Download link enabled until date.
                         </small>
                     </div>
                     <div class="form-group">
