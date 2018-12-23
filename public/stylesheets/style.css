@@ -7,6 +7,13 @@ a {
     color: #00B7FF;
 }
 
-td, th {
-    word-wrap: break-word;
+table {
+    table-layout: fixed;
+    width: 100%;
+}
+
+table, td, th {
+    /*text-wrap: normal;*/
+    /*white-space: normal !important;*/
+    word-wrap: break-word !important;
 }

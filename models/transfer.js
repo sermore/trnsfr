@@ -8,7 +8,7 @@ class Transfer {
         this.emails = (data.emails ? (Array.isArray(data.emails) ? data.emails : data.emails.split(',')) : []).filter(v => v.length > 0);
         this.subject = data.subject;
         this.message = data.message;
-        this.enabled = data.enabled;
+        this.enabled =  data.enabled ? (typeof data.enabled === 'boolean' ? data.enabled : data.enabled === 'true') : false;
         this.enabledUntil = data.enabledUntil ? (data.enabledUntil instanceof Date ? data.enabledUntil : new Date(data.enabledUntil)) : null;
         this.count = 0;
         this.last = null;
@@ -19,8 +19,14 @@ class Transfer {
         this.emails = (data.emails ? (Array.isArray(data.emails) ? data.emails : data.emails.split(',')) : this.emails).filter(v => v.length > 0);
         this.subject = data.subject ? data.subject : this.subject;
         this.message = data.message ? data.message : this.message;
-        this.enabled = data.enabled;
+        this.enabled =  data.enabled ? (typeof data.enabled === 'boolean' ? data.enabled : data.enabled === 'true') : false;
         this.enabledUntil = data.enabledUntil ? (data.enabledUntil instanceof Date ? data.enabledUntil : new Date(data.enabledUntil)) : null;
+        console.log(this);
+        console.log(data);
+    }
+
+    isEnabled() {
+        return this.enabled && (!this.enabledUntil || this.enabledUntil.getTime() >= Date.now());
     }
 }
 

@@ -1,12 +1,14 @@
 const createError = require('http-errors');
 const express = require('express');
+const hbs = require('hbs');
 const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const basicAuth = require('express-basic-auth');
-const expressHbs = require('express-handlebars');
 const helpers = require('./lib/helpers');
+const archive = require('./lib/archive');
 const environment = helpers.requireEnvironment();
+
 
 const indexRouter = require('./routes/index');
 const transfersRouter = require('./routes/transfers');
@@ -17,15 +19,32 @@ const app = express();
 // app.locals.environment = environment;
 
 // view engine setup
-app.engine('.hbs', expressHbs({
-    defaultLayout: 'default',
-    extname: '.hbs',
-    helpers: {
-        dateFormat: (date) => date ? date.toLocaleString() : '',
-        url: helpers.url
-    }
-}));
 app.set('view engine', 'hbs');
+app.set('views', path.join(__dirname, 'views'));
+
+hbs.registerPartials(__dirname + '/views/partials');
+
+const blocks = {};
+hbs.registerHelper('extend', function(name, context) {
+    let block = blocks[name];
+    if (!block) {
+        block = blocks[name] = [];
+    }
+
+    block.push(context.fn(this)); // for older versions of handlebars, use block.push(context(this));
+});
+
+hbs.registerHelper('block', function(name) {
+    const val = (blocks[name] || []).join('\n');
+
+    // clear the block
+    blocks[name] = [];
+    return val;
+});
+
+hbs.registerHelper('dateFormat', (date) => date ? date.toISOString() : '');
+hbs.registerHelper('url', helpers.url);
+hbs.registerHelper('isTransferDisabled', (id, options) => archive.isTransferEnabled(id) ? null : options.fn(this));
 
 app.use(logger('dev'));
 app.use(express.json());

@@ -5,7 +5,7 @@ const archive = require('../lib/archive');
 /* GET users listing. */
 router.get('/:id', function (req, res, next) {
     const id = req.params.id;
-    if (!archive.isValidTransfer(id)) {
+    if (!archive.isTransferEnabled(id)) {
         res.render('404', {disableHomeLink: true});
     } else {
         res.writeHead(200, {

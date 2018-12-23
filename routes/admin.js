@@ -46,7 +46,7 @@ router.delete('/transfers/:id', (req, res, next) => {
 
 router.get('/transfers', (req, res, next) => {
     console.log(`transfers ${archive.transferMap.size}`);
-    res.render('transfers', { transfers: Array.from(archive.transferMap.values()), title: 'Transfer list', layout: 'admin' })
+    res.render('transfers', { transfers: Array.from(archive.transferMap.values()), title: 'Transfer list', layout: 'admin-layout' })
 });
 
 router.get('/transfers/params', (req, res, next) => {
