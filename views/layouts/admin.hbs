@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+    {{> head}}
+</head>
+<body>
+<div class="container-fluid">
+    <div class="row">
+        {{!--
+        <div class="col-sm-2">
+            {{> sidebar}}
+        </div>
+        --}}
+        <div class="col">
+            <div class="row flex-sm-row">
+                <div class="col">
+                    {{> navbar}}
+                </div>
+            </div>
+            <div class="row mt-4 flex-fill">
+                <div class="col">
+                    {{{body}}}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{{> scripts}}
+</body>
+</html>

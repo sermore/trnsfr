@@ -1,0 +1,243 @@
+<div class="table-responsive">
+    <table class="table">
+        <colgroup>
+            <col style="width: 5%">
+            <col style="width: 15%">
+            <col style="width: 15%">
+            <col style="width: 20%">
+            <col style="width: 20%">
+            <col style="width: 5%">
+            <col style="width: 5%">
+            <col style="width: 5%">
+            <col style="width: 5%">
+            <col style="width: 5%">
+        </colgroup>
+        <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">Glob patterns</th>
+            <th scope="col">Emails</th>
+            <th scope="col">Subject</th>
+            <th scope="col">Message</th>
+            <th scope="col">Enabled</th>
+            <th scope="col">Enabled until</th>
+            <th scope="col"># Dwnlds</th>
+            <th scope="col">Last Dwnld</th>
+            <th scope="col">
+                <a href="#" data-toggle="modal"
+                   data-target="#transferModal"
+                   onclick="newForm()">
+                    <i class="fas fa-plus"></i>
+                </a>
+            </th>
+        </tr>
+        </thead>
+        <tbody>
+        {{#each transfers as |tr index|}}
+            <tr id="tr{{index}}">
+                <td>{{tr.id}}</td>
+                <td id="params{{index}}">{{tr.params}}</td>
+                <td id="emails{{index}}">{{tr.emails}}</td>
+                <td id="subject{{index}}">{{tr.subject}}</td>
+                <td id="message{{index}}">{{tr.message}}</td>
+                <td id="enabled{{index}}">{{tr.enabled}}</td>
+                <td id="enabledUntil{{index}}">{{dateFormat tr.enabledUntil}}</td>
+                <td class="text-right">{{tr.count}}</td>
+                <td>{{dateFormat tr.last}}</td>
+                <td class="col text-nowrap">
+                    <a href="#" data-toggle="modal"
+                       data-target="#transferModal"
+                       onclick="editForm('{{tr.id}}', {{index}})">
+                        <i class="fas fa-edit"></i>
+                    </a>
+                    <a href="#"
+                       onclick="deleteTransfer('{{tr.id}}', {{index}})">
+                        <i class="fas fa-trash"></i>
+                    </a>
+                </td>
+            </tr>
+        {{/each}}
+        </tbody>
+    </table>
+</div>
+
+<div class="modal fade" id="transferModal" tabindex="-1" role="dialog" aria-labelledby="transferModalTitle"
+     aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="transferModalTitle">Transfer Edit</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form id="transferForm" name="transferForm" method="post" action="{{url '/admin/transfers'}}">
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="paramsInput">Params</label>
+                        <div class="input-group d-none">
+                            <input type="text" name="params" class="form-control" id="paramsInput"
+                                   aria-describedby="paramsHelp" placeholder="Enter Params" disabled>
+                            <a href="#" class="input-group-text" onclick="removeField($(this))">
+                                <i class="fas fa-minus"></i>
+                            </a>
+                        </div>
+                        <div class="input-group">
+                            <input type="text" name="params" class="form-control main" id="paramsInput"
+                                   aria-describedby="paramsHelp" placeholder="Enter Params">
+                                <a href="#" class="input-group-text" onclick="listFiles()">
+                                    <i class="fas fa-download"></i>
+                                </a>
+                                <a href="#" class="input-group-text" onclick="addField($(this))">
+                                    <i class="fas fa-plus"></i>
+                                </a>
+                        </div>
+                        <small id="paramsHelp" class="form-text text-muted">Insert glob patterns.
+                        </small>
+                        <ul id="paramsOutput" class="list-group">
+                        </ul>
+                    </div>
+                    <div class="form-group">
+                        <label for="emailsInput">Emails</label>
+                        <div class="input-group d-none">
+                            <input type="text" name="emails" class="form-control" id="emailsInput"
+                                   aria-describedby="emailsHelp" placeholder="Emails" disabled>
+                            <a href="#" class="input-group-text" onclick="removeField($(this))">
+                                <i class="fas fa-minus"></i>
+                            </a>
+                        </div>
+                        <div class="input-group">
+                            <input type="text" name="emails" class="form-control main" id="emailsInput"
+                                   aria-describedby="emailsHelp" placeholder="Emails">
+                            <a href="#" class="input-group-text" onclick="addField($(this))">
+                                <i class="fas fa-plus"></i>
+                            </a>
+                        </div>
+                        <small id="emailsHelp" class="form-text text-muted">Insert email recipients.
+                        </small>
+                    </div>
+                    <div class="form-group">
+                        <label for="subjectInput">Subject</label>
+                        <input type="text" name="subject" class="form-control" id="subjectInput"
+                               aria-describedby="subjectHelp" placeholder="Subject">
+                        <small id="subjectHelp" class="form-text text-muted">Insert email subject.
+                        </small>
+                    </div>
+                    <div class="form-group">
+                        <label for="messageInput">Message</label>
+                        <input type="text" name="message" class="form-control" id="messageInput"
+                               aria-describedby="messageHelp" placeholder="Message">
+                        <small id="messageHelp" class="form-text text-muted">Insert email message.
+                        </small>
+                    </div>
+                    <div class="form-group">
+                        <div class="form-check">
+                            <input name="enabled" class="form-check-input" type="checkbox" id="enabledCheck">
+                            <label class="form-check-label" for="enabledCheck">
+                                Enabled
+                            </label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="enabledUntilInput">Enabled Until</label>
+                        <!--<input type="text" name="enabledUntil" class="form-control" id="enabledUntilInput"-->
+                               <!--aria-describedby="enabledUntilHelp" placeholder="Enabled until">-->
+                        <div class="input-append date" id="datetimepicker" data-date="12-02-2012" data-date-format="dd-mm-yyyy">
+                            <input name="enabledUntil" class="span2" size="16" type="text" value="12-02-2012">
+                            <span class="add-on"><i class="icon-th"></i></span>
+                        </div>
+                        <small id="enabledUntilHelp" class="form-text text-muted">Enabled until date.
+                        </small>
+                    </div>
+                    <div class="form-group">
+                        <div class="form-check">
+                            <input name="sendEmails" class="form-check-input" type="checkbox" id="sendEmailsCheck">
+                            <label class="form-check-label" for="sendEmailsCheck">
+                                Send Emails
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Save changes</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    // $(function () {
+    //     $('#datetimepicker').datetimepicker();
+    // });
+
+    function editForm(trId, index) {
+        $('#transferForm').attr('action', `{{url '/admin/transfers/'}}${trId}`);
+        // $('#transferForm input[name=params]').val($(`#params${index}`).text());
+        populateField('params', index);
+        // $('#transferForm input[name=emails]').val($(`#emails${index}`).text());
+        populateField('emails', index);
+        $('#transferForm input[name=subject]').val($(`#subject${index}`).text());
+        $('#transferForm input[name=message]').val($(`#message${index}`).text());
+        $('#paramsOutput').empty();
+    }
+
+    function newForm() {
+        $('#transferForm').attr('action', `{{url '/admin/transfers/'}}`);
+        populateField('params', -1);
+        populateField('emails', -1);
+        $('#transferForm input[name=subject]').val('');
+        $('#transferForm input[name=message]').val('');
+        $('#paramsOutput').empty();
+    }
+
+    function deleteTransfer(trId, index) {
+        $.ajax({
+            url: `{{url '/admin/transfers/'}}${trId}`,
+            type: 'DELETE',
+            success: () => ($(`#tr${index}`).remove())
+        });
+    }
+
+    function listFiles() {
+        let v = [];
+        $('#transferForm input[name=params]').each(function() { v.push($(this).val()); });
+        v = v.filter(v => v.length > 0);
+        console.log(v);
+        $.ajax({
+            url: '{{url "/admin/transfers/params"}}',
+            data: {params: v},
+            success: data => {
+                console.log(data);
+                let res = '';
+                for (let i = 0; i < data.length; i++) {
+                    res += `<li class="list-group-item">${data[i]}</li>`;
+                }
+                $('#paramsOutput').empty().append(res);
+            }
+        });
+    }
+
+    function populateField(fieldName, index) {
+        $(`#transferForm input[name=${fieldName}].copy`).parent().remove();
+        const l = $(`#${fieldName}${index}`).text().split(',');
+        for (let i = 0; i < l.length - 1; i++) {
+            let el = addField($(`#transferForm input[name=${fieldName}].main`));
+            el.children('input').val(l[i]);
+        }
+        $(`#transferForm input[name=${fieldName}].main`).val(l.length > 0 ? l[l.length - 1] : '');
+    }
+
+    function addField(elem) {
+        const main = elem.parent().children('input');
+        const res = elem.parent().prev().clone().removeClass('d-none').insertAfter(elem.parent().prev());
+        res.children('input').val(main.val()).prop('disabled', false).addClass('copy');
+        main.val('');
+        return res;
+    }
+
+    function removeField(elem) {
+        elem.parent().remove();
+    }
+</script>
