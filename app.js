@@ -50,8 +50,8 @@ app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({extended: false}));
 app.use(cookieParser());
-app.use(express.static(__dirname + '/node_modules'));
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(helpers.url(''), express.static(__dirname + '/node_modules'));
+app.use(helpers.url(''), express.static(path.join(__dirname, 'public')));
 
 // if (app.locals.environment.rootPath) {
 //     app.use(app.locals.environment.rootPath, indexRouter);
