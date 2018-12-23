@@ -1,11 +1,11 @@
 const environment = {
-    baseUrl: "/trnsf",
-    dataFile: "./data.json",
+    baseUrl: "/trnsfr",
+    dataFile: "../data.json",
 
     users: {
         admin: process.env.USERS_ADMIN_PASSWORD
     },
-    realm: "transf43",
+    realm: "transfr43",
 
     publicUrl: process.env.PUBLIC_URL,
     from: process.env.EMAIL_FROM,
