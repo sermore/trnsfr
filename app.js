@@ -44,6 +44,7 @@ hbs.registerHelper('block', function(name) {
 
 hbs.registerHelper('dateFormat', (date) => date ? date.toISOString() : '');
 hbs.registerHelper('url', helpers.url);
+hbs.registerHelper('url2', (p1, p2, options) => helpers.url(p1 + p2));
 hbs.registerHelper('isTransferDisabled', (id, options) => archive.isTransferEnabled(id) ? null : options.fn(this));
 
 app.use(logger('dev'));

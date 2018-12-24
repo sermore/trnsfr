@@ -12,7 +12,7 @@
             <col>
             <col>
             <col>
-            <col style="width: 5%">
+            <col style="width: 8%">
         </colgroup>
         <thead>
         <tr>
@@ -52,10 +52,11 @@
                        onclick="editForm('{{tr.id}}', {{index}})">
                         <i class="fas fa-edit"></i>
                     </a>
-                    <a href="#"
-                       onclick="deleteTransfer('{{tr.id}}', {{index}})">
+                    <a href="#" data-toggle="modal" data-target="#confirmModal"
+                       onclick="setDeleteButton('{{tr.id}}', {{index}})">
                         <i class="fas fa-trash"></i>
                     </a>
+                    <a href="{{url2 '/transfers/' tr.id}}"><i class="fas fa-link"></i></a>
                 </td>
             </tr>
         {{/each}}
@@ -134,7 +135,8 @@
                     </div>
                     <div class="form-group">
                         <div class="form-check">
-                            <input name="enabled" class="form-check-input" type="checkbox" id="enabledCheck" value="true">
+                            <input name="enabled" class="form-check-input" type="checkbox" id="enabledCheck"
+                                   value="true">
                             <label class="form-check-label" for="enabledCheck">
                                 Download link enabled
                             </label>
@@ -149,7 +151,8 @@
                     </div>
                     <div class="form-group">
                         <div class="form-check">
-                            <input name="sendEmails" class="form-check-input" type="checkbox" id="sendEmailsCheck" value="true">
+                            <input name="sendEmails" class="form-check-input" type="checkbox" id="sendEmailsCheck"
+                                   value="true">
                             <label class="form-check-label" for="sendEmailsCheck">
                                 Send Emails
                             </label>
@@ -164,6 +167,30 @@
         </div>
     </div>
 </div>
+{{!- confirmation dialog -}}
+<div class="modal fade" id="confirmModal" tabindex="-1" role="dialog" aria-labelledby="confirmModalTitle"
+     aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="confirmModalLongTitle">Delete transfer</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                Delete transfer?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-primary" data-dismiss="modal" id="deleteButton">
+                    Delete
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
 
 {{#extend "scripts"}}
     <script>
@@ -174,7 +201,7 @@
             $('#transferForm input[name=subject]').val($(`#subject${index}`).text());
             $('#transferForm input[name=message]').val($(`#message${index}`).text());
             $('#transferForm input[name=enabled]').prop('checked', $(`#enabled${index}`).text() === 'true');
-            $('#transferForm input[name=enabledUntil]').val($(`#enabledUntil${index}`).text().slice(0,19));
+            $('#transferForm input[name=enabledUntil]').val($(`#enabledUntil${index}`).text().slice(0, 19));
             $('#transferForm input[name=sendEmails]').prop('checked', false);
             $('#paramsOutput').empty();
             console.log($(`#enabledUntil${index}`).text());
@@ -190,6 +217,10 @@
             $('#transferForm input[name=enabledUntil]').val('');
             $('#transferForm input[name=sendEmails]').prop('checked', false);
             $('#paramsOutput').empty();
+        }
+
+        function setDeleteButton(trId, index) {
+            $('#deleteButton').click(() => deleteTransfer(trId, index));
         }
 
         function deleteTransfer(trId, index) {
