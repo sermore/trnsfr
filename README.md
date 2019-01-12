@@ -12,7 +12,7 @@ Moreover it is possible to send one or more emails containing the above describe
 The application has an admin section `/admin/transfers` protected by a basic authentication scheme, which permits the management of records containing the details for each public, unique, published path.
 
 Each record is composed by the following fields:
-- **unique-id**, automatically generated unique identifier which is used to build the public link path `/transfers/unqiue-id`;
+- **Unique-id**, automatically generated unique identifier which is used to build the public link path `/transfers/unqiue-id`;
 - **Glob patterns**, a list of glob patterns, which, applied to the server's local file system, identify the content of the zip being downloaded;
 - **Emails**, a list of email recipients; For each recipient an email will be sent with the specified subject, message body and download link;
 - **Subject**, subject of the email;
@@ -28,14 +28,15 @@ Each record is composed by the following fields:
 
 The installation can follow standard node.js installation guidelines.
 The file `environment.js` / `environment.prod.js` contains all the needed information in order to run the application in development or production modes.
-environment content:
-- **baseUrl**, path of the application, i.e. http://your-server/trsnsfr
+
+The environment content is listed below:
+- **baseUrl**, path of the application, i.e. `/trnsfr` to obtain `http://your-server/trnsfr`;
 - **dataFile**, path of the json file used to store the records, this location needs to have read/write permissions for the user who runs the application;
-- **users**, list of accounts used for basic authentication
-- **realm**, basic authentication realm,
+- **users**, list of accounts used for basic authentication;
+- **realm**, basic authentication realm;
 - **publicUrl**, public url of the server, needed to create links inside email body;
-- **from**, email sender address
-- **smtpConfig**, smtp server configuration
+- **from**, email sender address;
+- **smtpConfig**, smtp server configuration;
 
 
 Find below a basic systemd service configuration:
@@ -53,12 +54,12 @@ Environment=PORT=7654
 Environment=USERS_ADMIN_PASSWORD=XXXX
 Environment=PUBLIC_URL=http://your-public-server-address
 Environment="EMAIL_FROM=Email sender <trnsfr@your-domain>"
-Environment=SMTP_HOST=email-server
+Environment=SMTP_HOST=smtp-server-address
 Environment=SMTP_PORT=465
 Environment=SMTP_SECURE=true
 Environment=SMTP_AUTH_USER=XXXX
 Environment=SMTP_AUTH_PASS=XXXX
-ExecStart=/path-to-node/node /path-to-application/bin/www
+ExecStart=/absolute-path-to-node-app/node /absolute-path-to-application/bin/www
 SuccessExitStatus=143
 Restart=on-failure
 
@@ -66,4 +67,8 @@ Restart=on-failure
 WantedBy=multi-user.target
 ~~~
 
+
+## Licensing
+
+The code in this project is licensed under GPL-3.0 license.
 
